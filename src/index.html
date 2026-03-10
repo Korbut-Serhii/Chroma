@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chroma — Color Palette Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Custom Titlebar -->
+  <div class="titlebar" id="titlebar">
+    <div class="titlebar-logo">
+      <span class="logo-icon">◈</span>
+      <span class="logo-text">CHROMA</span>
+    </div>
+    <div class="titlebar-drag"></div>
+    <div class="titlebar-controls">
+      <button class="tb-btn minimize" id="btn-min" title="Minimise">—</button>
+      <button class="tb-btn maximize" id="btn-max" title="Maximise">□</button>
+      <button class="tb-btn close" id="btn-close" title="Close">✕</button>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-panel="generate" title="Generate">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">Generate</span>
+      </button>
+      <button class="nav-item" data-panel="harmony" title="Harmony">
+        <span class="nav-icon">⬡</span>
+        <span class="nav-label">Harmony</span>
+      </button>
+      <button class="nav-item" data-panel="saved" title="Saved">
+        <span class="nav-icon">♥</span>
+        <span class="nav-label">Saved</span>
+      </button>
+      <button class="nav-item" data-panel="gradient" title="Gradient">
+        <span class="nav-icon">◑</span>
+        <span class="nav-label">Gradient</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item" data-panel="settings" title="Settings">
+        <span class="nav-icon">⚙</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- GENERATE PANEL -->
+    <section class="panel active" id="panel-generate">
+      <header class="panel-header">
+        <div>
+          <h1 class="panel-title">Palette Generator</h1>
+          <p class="panel-subtitle">Press <kbd>Space</kbd> to generate a new palette</p>
+        </div>
+        <div class="header-actions">
+          <div class="count-selector">
+            <button class="count-btn" data-count="3">3</button>
+            <button class="count-btn active" data-count="5">5</button>
+            <button class="count-btn" data-count="6">6</button>
+            <button class="count-btn" data-count="8">8</button>
+          </div>
+          <button class="action-btn primary" id="btn-generate">
+            <span>◈</span> Generate
+          </button>
+          <button class="action-btn" id="btn-save-palette">
+            <span>♥</span> Save
+          </button>
+        </div>
+      </header>
+
+      <!-- Mode selector -->
+      <div class="mode-bar">
+        <button class="mode-btn active" data-mode="random">Random</button>
+        <button class="mode-btn" data-mode="warm">Warm</button>
+        <button class="mode-btn" data-mode="cool">Cool</button>
+        <button class="mode-btn" data-mode="pastel">Pastel</button>
+        <button class="mode-btn" data-mode="dark">Dark</button>
+        <button class="mode-btn" data-mode="neon">Neon</button>
+        <button class="mode-btn" data-mode="earth">Earth</button>
+        <button class="mode-btn" data-mode="monochrome">Mono</button>
+      </div>
+
+      <!-- Palette Display -->
+      <div class="palette-container" id="palette-container">
+        <!-- Colors rendered by JS -->
+      </div>
+
+      <!-- Export Bar -->
+      <div class="export-bar">
+        <span class="export-label">Export as:</span>
+        <button class="export-btn" data-format="css">CSS</button>
+        <button class="export-btn" data-format="scss">SCSS</button>
+        <button class="export-btn" data-format="json">JSON</button>
+        <button class="export-btn" data-format="txt">TXT</button>
+        <div class="export-spacer"></div>
+        <div class="copy-format-selector">
+          <span class="export-label">Copy format:</span>
+          <button class="copy-fmt-btn active" data-fmt="hex">HEX</button>
+          <button class="copy-fmt-btn" data-fmt="rgb">RGB</button>
+          <button class="copy-fmt-btn" data-fmt="hsl">HSL</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- HARMONY PANEL -->
+    <section class="panel" id="panel-harmony">
+      <header class="panel-header">
+        <div>
+          <h1 class="panel-title">Color Harmony</h1>
+          <p class="panel-subtitle">Choose a base color and harmony rule</p>
+        </div>
+      </header>
+      <div class="harmony-layout">
+        <div class="harmony-controls">
+          <div class="color-picker-wrap">
+            <label class="field-label">Base Color</label>
+            <div class="picker-row">
+              <input type="color" id="harmony-picker" value="#6C63FF" class="color-input" />
+              <input type="text" id="harmony-hex" value="#6C63FF" class="hex-input" maxlength="7" />
+            </div>
+          </div>
+          <div class="harmony-rules">
+            <label class="field-label">Harmony Rule</label>
+            <div class="rule-grid">
+              <button class="rule-btn active" data-rule="complementary">Complementary</button>
+              <button class="rule-btn" data-rule="triadic">Triadic</button>
+              <button class="rule-btn" data-rule="analogous">Analogous</button>
+              <button class="rule-btn" data-rule="split">Split-Comp</button>
+              <button class="rule-btn" data-rule="tetradic">Tetradic</button>
+              <button class="rule-btn" data-rule="square">Square</button>
+            </div>
+          </div>
+        </div>
+        <div class="harmony-wheel-wrap">
+          <canvas id="color-wheel" width="260" height="260"></canvas>
+          <div class="wheel-label">Color Wheel</div>
+        </div>
+      </div>
+      <div class="palette-container" id="harmony-palette"></div>
+    </section>
+
+    <!-- SAVED PANEL -->
+    <section class="panel" id="panel-saved">
+      <header class="panel-header">
+        <div>
+          <h1 class="panel-title">Saved Palettes</h1>
+          <p class="panel-subtitle">Your favourites collection</p>
+        </div>
+        <button class="action-btn danger" id="btn-clear-saved">Clear All</button>
+      </header>
+      <div class="saved-grid" id="saved-grid">
+        <div class="empty-state">
+          <div class="empty-icon">♥</div>
+          <p>No saved palettes yet.<br/>Generate and save palettes to see them here.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRADIENT PANEL -->
+    <section class="panel" id="panel-gradient">
+      <header class="panel-header">
+        <div>
+          <h1 class="panel-title">Gradient Studio</h1>
+          <p class="panel-subtitle">Create beautiful gradients from your palette</p>
+        </div>
+      </header>
+      <div class="gradient-layout">
+        <div class="gradient-controls">
+          <div class="grad-control-group">
+            <label class="field-label">Type</label>
+            <div class="seg-control">
+              <button class="seg-btn active" data-gtype="linear">Linear</button>
+              <button class="seg-btn" data-gtype="radial">Radial</button>
+              <button class="seg-btn" data-gtype="conic">Conic</button>
+            </div>
+          </div>
+          <div class="grad-control-group">
+            <label class="field-label">Angle: <span id="angle-val">135°</span></label>
+            <input type="range" id="angle-slider" min="0" max="360" value="135" class="slider" />
+          </div>
+          <div class="grad-control-group">
+            <label class="field-label">Stops</label>
+            <div id="grad-stops" class="grad-stops-list"></div>
+            <button class="action-btn small" id="add-stop">+ Add Stop</button>
+          </div>
+          <div class="grad-control-group">
+            <label class="field-label">Generated CSS</label>
+            <div class="code-box" id="gradient-css-output"></div>
+            <button class="action-btn small" id="copy-gradient-css">Copy CSS</button>
+          </div>
+        </div>
+        <div class="gradient-preview-wrap">
+          <div class="gradient-preview" id="gradient-preview"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-settings">
+      <pre>
+
+
+
+
+
+      There are no settings yet, but they will be here in the future updates! 
+
+
+
+
+          --  Made by Weksar (Korbut Serhii). Feel free to use! 
+      </pre>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
