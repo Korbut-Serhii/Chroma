@@ -86,12 +86,12 @@ function randomHex() {
 
 function generateColor(mode) {
   switch (mode) {
-    case 'warm':    return hslToHex(Math.random() * 60 + 330 > 360 ? Math.random() * 60 : Math.random() * 60, 60 + Math.random() * 40, 35 + Math.random() * 45);
-    case 'cool':    return hslToHex(180 + Math.random() * 120, 50 + Math.random() * 40, 35 + Math.random() * 45);
-    case 'pastel':  return hslToHex(Math.random() * 360, 40 + Math.random() * 30, 70 + Math.random() * 20);
-    case 'dark':    return hslToHex(Math.random() * 360, 20 + Math.random() * 50, 8 + Math.random() * 25);
-    case 'neon':    return hslToHex(Math.random() * 360, 90 + Math.random() * 10, 50 + Math.random() * 15);
-    case 'earth':   return hslToHex(20 + Math.random() * 50, 25 + Math.random() * 40, 25 + Math.random() * 45);
+    case 'warm': return hslToHex(Math.random() * 60 + 330 > 360 ? Math.random() * 60 : Math.random() * 60, 60 + Math.random() * 40, 35 + Math.random() * 45);
+    case 'cool': return hslToHex(180 + Math.random() * 120, 50 + Math.random() * 40, 35 + Math.random() * 45);
+    case 'pastel': return hslToHex(Math.random() * 360, 40 + Math.random() * 30, 70 + Math.random() * 20);
+    case 'dark': return hslToHex(Math.random() * 360, 20 + Math.random() * 50, 8 + Math.random() * 25);
+    case 'neon': return hslToHex(Math.random() * 360, 90 + Math.random() * 10, 50 + Math.random() * 15);
+    case 'earth': return hslToHex(20 + Math.random() * 50, 25 + Math.random() * 40, 25 + Math.random() * 45);
     case 'monochrome': {
       const base = state.palette[0] ? hexToRgb(state.palette[0].hex) : { r: 100, g: 100, b: 100 };
       const { h, s } = rgbToHsl(base.r, base.g, base.b);
@@ -121,13 +121,13 @@ function getHarmonyColors(baseHex, rule) {
   const make = (dh, ds = s, dl = l) => buildColor(hslToHex((h + dh + 360) % 360, Math.min(100, ds), Math.min(95, Math.max(5, dl))));
 
   switch (rule) {
-    case 'complementary':  return [make(0), make(30,-15,l-10), make(180), make(210,-15,l+10)];
-    case 'triadic':        return [make(0), make(120), make(240), make(60, s-20)];
-    case 'analogous':      return [make(-40), make(-20), make(0), make(20), make(40)];
-    case 'split':          return [make(0), make(150), make(210), make(75, s-20)];
-    case 'tetradic':       return [make(0), make(90), make(180), make(270)];
-    case 'square':         return [make(0), make(90), make(180), make(270), make(45, s-20)];
-    default:               return [make(0), make(180)];
+    case 'complementary': return [make(0), make(30, -15, l - 10), make(180), make(210, -15, l + 10)];
+    case 'triadic': return [make(0), make(120), make(240), make(60, s - 20)];
+    case 'analogous': return [make(-40), make(-20), make(0), make(20), make(40)];
+    case 'split': return [make(0), make(150), make(210), make(75, s - 20)];
+    case 'tetradic': return [make(0), make(90), make(180), make(270)];
+    case 'square': return [make(0), make(90), make(180), make(270), make(45, s - 20)];
+    default: return [make(0), make(180)];
   }
 }
 
